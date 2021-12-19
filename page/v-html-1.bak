@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <!-- <link rel="stylesheet" href="index.css"> -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vue 3: events example</title>
+        <style>
+            body {
+                text-align: center;
+            }
+            #app {
+                color: blue;
+            }
+            .flex {
+                display: flex;
+                justify-content: space-evenly;
+            }
+            img {
+                display: block;
+                margin: auto;
+            }
+            .inline {
+                display: inline-flex;
+                border: 1px red solid;
+                width: 100px;
+                justify-content: space-between;
+            }
+            .list-none {
+                list-style: none;
+                border: 1px black dashed;
+                width: 400px;
+                display: flex;
+                justify-content: space-between;
+                padding-left: 0px;;
+            }
+            .fade-enter-active, .fade-leave-active {
+                transition: opacity .6s;
+            }
+            .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+                opacity: 0;
+            }
+            th, td {
+                border: 1px black solid;
+            }
+            table {
+                border: 1px black solid;
+                height: 40px;
+            }
+            .table-small {
+                height: 50px;
+            }
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+        
+    </head>
+   
+    <body><p>Vue 3: Event mMethods</p>
+
+        <div id="app" v-cloak>
+            {{ title}}
+            <div>
+
+                <div class="flex">
+                    <div>Product selection
+                        <ul class="list-none">
+                            <li v-for="product in inventory">{{product.name}}<div>qty</div><input v-model.number="inventory" v-on:input="seeQty()" type="number" min="0" size="1" />
+                                <button v-on:click.number="addToCart('inventory.name', 'count')">add</button></li>
+<!-- 
+                            <li>celry<div>qty</div><input  v-model.number="inventory" v-on:input="seeQty('celry', 'count')" type="number" min="0" size="1" />
+                                <button v-on:click.number="addToCart('celry', 'count')">add</button></li>
+
+                            <li>potato<div>qty</div><input v-model.number="inventory" v-on:input="seeQty('potato', 'count')" type="number" min="0" size="1" />
+                                <button v-on:click.number="addToCart('potato', 'count')">add</button></li>
+
+                            <li>steak<div>qty</div><input v-model.number="inventory" v-on:input="seeQty('steak', 'count')" type="number" min="0" size="1" />
+                                <button v-on:click.number="addToCart('steak', 'count')">add</button></li> -->
+                        </ul>
+                    </div>
+                    <table>
+                        <tr>
+                          <th>product</th>
+                          <th>price</th>
+                          <th>quantity</th>
+                          <th>total</th>
+                        </tr>
+                        <tr v-if="isVisible" class="table-small">
+                          <td>carrots</td>
+                          <td>3.95</td>
+                          <td>{{msg}}</td>
+                          <td>${{total}}</td>
+                        </tr>
+                      </table>
+                </div>
+            </div>
+        </div>
+</body>
+          <script src="https://unpkg.com/vue@next"></script>
+
+    <script>
+
+        let app = Vue.createApp({
+            data: function () {
+                return {
+                    title: "Static html product selection to cart",
+                    inventory: {},
+                    cart: {
+                        carrots: {count: 0},
+                        celry: {count: 0},
+                        potato: {count: 0},
+                        steak: {count: 0}
+                    },
+                    msg: 0,
+                    isVisible: false
+                }
+            },
+            computed: {
+                total() {
+                    return (this.msg * 3.95).toFixed(2)
+                }
+            },
+            methods: {
+                seeQty() {
+                    // console.log(this.inventory[type][count])
+                    console.log(this.inventory)
+                },
+                addToCart(type, count) {
+                    console.log(this.cart[type][count] = this.inventory[type][count])
+                    this.cart[type][count] = this.inventory[type][count]
+                    console.log(this.cart[type][count])
+                    this.msg = this.cart[type][count]
+                    this.isVisible = true
+                }
+            },
+            async mounted() {
+                const res = await fetch("http://127.0.0.1:5500/product.json")
+                const data = await res.json()
+                this.inventory = data
+                console.log(data)
+            },
+        })
+        // app.config.performance = true;
+
+        app.mount("#app")
+    </script>
+</body>
+</html>
+ 

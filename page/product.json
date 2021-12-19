@@ -1,0 +1,6 @@
+[
+    {"id": 1, "name": "carrots", "price": 2.49},
+    {"id": 2, "name": "celry",   "price": 0.99, "qty": 0},
+    {"id": 3, "name": "potato",  "price": 0.33, "qty": 0},
+    {"id": 4, "name": "steak",   "price": 2.49, "qty": 0}
+]
